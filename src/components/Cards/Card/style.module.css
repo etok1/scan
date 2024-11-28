@@ -1,0 +1,85 @@
+.card {
+  padding: 19px 30px 30px;
+  max-width: 581px;
+  width: 100%;
+  max-height: 644px;
+  height: 100%;
+  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.info p {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.author {
+  text-underline-offset: 3px;
+  text-decoration: underline;
+}
+
+.card h2 {
+  line-height: 31px;
+  margin: 15px 0;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.tag {
+  font-size: 12px;
+  background-color: var(--orange);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.card img {
+  margin-top: 15px;
+  width: 100%;
+  height: 158px;
+}
+
+.text {
+  margin-top: 25px;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 19px;
+  letter-spacing: 2%;
+}
+
+.btn {
+  font-size: 16px;
+  padding: 14px 32px;
+  border: none;
+  background-color: var(--teal);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s linear;
+
+  &:hover {
+    background-color: var(--green);
+    color: var(--white);
+  }
+}
+
+.footer {
+  margin-top: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.words {
+  color: var(--text);
+}

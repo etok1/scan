@@ -1,0 +1,39 @@
+.footer {
+  background-color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  justify-content: space-between;
+}
+
+.info {
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.info p {
+  font-size: 12px;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.address p {
+  font-size: 14px !important;
+}

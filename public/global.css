@@ -1,0 +1,45 @@
+:root {
+  --green: #029491;
+  --salad: #8ac540;
+  --black: #000;
+  --white: #fff;
+  --orange: #ffb64f;
+  --teal: #7ce3e1;
+  --purple: #5970ff;
+  --grey: #d9d9d9;
+  --dark-grey: #a7a7a7;
+  --text: #949494;
+  --grey: #ababab;
+}
+
+@font-face {
+  font-family: "Ferry";
+  src: url("/fonts/Ferry/ferry_black.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.button {
+  width: 70%;
+  background-color: var(--purple);
+  border-radius: 5px;
+  padding: 8px 55px;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.5s ease;
+
+  &:hover {
+    background-color: var(--salad);
+  }
+}
+
+.isauth {
+  margin-top: 100px;
+  font-family: "Ferry", sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+}

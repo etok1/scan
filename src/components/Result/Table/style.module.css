@@ -1,0 +1,16 @@
+.overall {
+  margin-top: 50px;
+}
+
+.overall h2 {
+  font-size: 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.result {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 400;
+  margin-top: 15px;
+}
