@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import style from "./style.module.css";
 import Slide from "./Slide/Slide";
-import { transform } from "typescript";
 
 const Slider = () => {
   const slides = [

@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 :root {
   --green: #029491;
   --salad: #8ac540;
   --black: #000;
+  --light-black: #00000011;
   --white: #fff;
   --orange: #ffb64f;
   --teal: #7ce3e1;
@@ -19,7 +22,7 @@
   font-style: normal;
 }
 
-.button {
+.button {  font-family: "Inter", sans-serif;
   width: 70%;
   background-color: var(--purple);
   border-radius: 5px;

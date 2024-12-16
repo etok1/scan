@@ -1,20 +1,21 @@
+
+
 .cont {
   margin-top: 50px;
   display: flex;
   align-items: center;
 }
 
+.cont svg{
+  cursor: pointer;
+}
+
 .sliderWrapper {
-  /* height: 158px; */
   border: 2px solid var(--green);
   border-radius: 0px 10px 10px 0px;
   flex: 1;
   max-width: 80%;
 }
-
-/* .slick-slide {
-  height: 100%;
-} */
 
 .header {
   display: flex;
@@ -31,4 +32,9 @@
 .header p {
   font-size: 20px;
   color: var(--white) !important;
+}
+
+
+:global(.slick-track) {
+  all: unset !important; 
 }

@@ -1,16 +1,27 @@
 // import Button from "../Button/Button";
-import { useState } from "react";
+import {  useState } from "react";
 import Checkbox from "./Checkbox/Checkbox";
 import style from "./style.module.css";
-import { AppDispatch } from "../../store/store";
+import  { AppDispatch } from "../../store/store";
 import { useDispatch } from "react-redux";
-import { fetchParameters } from "../../slices/ParamSlice";
+import { fetchCards, fetchParameters } from "../../slices/ParamSlice";
+import { useNavigate } from "react-router-dom";
+
+const inputFree = [
+  { key: "maxFullness", label: "Признак максимальной полноты", checked: true },
+  {
+    key: "inBusinessNews",
+    label: "Упоминания в бизнес-контексте",
+    checked: true,
+  },
+];
 
 const inputs = [
-  { key: "", label: "Признак максимальной полноты", checked: true },
-  { key: "", label: "Упоминания в бизнес-контексте", checked: true },
-  { key: "", label: "Главная роль в публикации" },
-  { key: "", label: "Публикации только с риск-факторами" },
+  { key: "onlyMainRole", label: "Главная роль в публикации", checked: true },
+  {
+    key: "onlyWithRiskFactors",
+    label: "Публикации только с риск-факторами",
+  },
 ];
 
 const checkboxs = [
@@ -24,49 +35,126 @@ const checkboxs = [
 ];
 
 interface RequestBody {
-  intervalType: string;
-  issueDateInterval: { from: number | null; to: number | null };
-  histogramTypes: string[];
-  searchContext: object;
+  issueDateInterval: {
+    startDate: string | null | number;
+    endDate: string | null | number;
+  };
+  searchContext: {
+    targetSearchEntitiesContext: {
+      targetSearchEntities: Array<{
+        type: string;
+        sparkId: number | null;
+        entityId: number | null;
+        inn: string | number | null;
+        maxFullness: boolean;
+        inBusinessNews: boolean | null;
+      }>;
+      onlyMainRole: boolean;
+      tonality: string;
+      onlyWithRiskFactors: boolean;
+      riskFactors: {
+        and: Array<{ id: number }>;
+        or: Array<{ id: number }>;
+        not: Array<{ id: number }>;
+      };
+      themes: {
+        and: Array<{ tonality: string; entityId: number }>;
+        or: Array<{ tonality: string; entityId: number }>;
+        not: Array<{ tonality: string; entityId: number }>;
+      };
+    };
+    themesFilter: {
+      and: Array<{ entityId: number }>;
+      or: Array<{ entityId: number }>;
+      not: Array<{ entityId: number }>;
+    };
+  };
+  searchArea: {
+    includedSources: Array<number>;
+    excludedSources: Array<number>;
+    includedSourceGroups: Array<number>;
+    excludedSourceGroups: Array<number>;
+  };
+  attributeFilters: {
+    excludeTechNews: boolean;
+    excludeAnnouncements: boolean;
+    excludeDigests: boolean;
+  };
   similarMode: string;
   limit: number | null;
   sortType: string;
   sortDirectionType: string;
-  attributeFilters: object;
+  intervalType: string;
+  histogramTypes: string[];
 }
-interface SearchContext {
-  targetSearchEntitiesContext: string | number;
-}
-interface Data {
-  searchContext: SearchContext;
-}
+
+
 interface InnValidationError {
   code: number;
   message: string;
 }
 
 export default function Parameter() {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const [data, setData] = useState<RequestBody>({
-    intervalType: "month",
-    histogramTypes: ["totalDocuments", "riskFactors"],
-    issueDateInterval: { from: null, to: null },
+    issueDateInterval: {
+      startDate: null,
+      endDate: null,
+    },
     searchContext: {
-      targetSearchEntitiesContext: "",
+      targetSearchEntitiesContext: {
+        targetSearchEntities: [
+          {
+            type: "company",
+            sparkId: null,
+            entityId: null,
+            inn: 7710137066,
+            maxFullness: true,
+            inBusinessNews: null,
+          },
+        ],
+        onlyMainRole: true,
+        tonality: "any",
+        onlyWithRiskFactors: false,
+        riskFactors: {
+          and: [],
+          or: [],
+          not: [],
+        },
+        themes: {
+          and: [],
+          or: [],
+          not: [],
+        },
+      },
+      themesFilter: {
+        and: [],
+        or: [],
+        not: [],
+      },
+    },
+    searchArea: {
+      includedSources: [],
+      excludedSources: [],
+      includedSourceGroups: [],
+      excludedSourceGroups: [],
+    },
+    attributeFilters: {
+      excludeTechNews: true,
+      excludeAnnouncements: true,
+      excludeDigests: true,
     },
     similarMode: "duplicates",
     limit: null,
-    sortType: "issueDate",
-    sortDirectionType: "asc",
-    attributeFilters: {
-      excludeTechNews: false,
-      excludeAnnouncements: true,
-      excludeDigests: false,
-    },
+    sortType: "sourceInfluence",
+    sortDirectionType: "desc",
+    intervalType: "month",
+    histogramTypes: ["totalDocuments", "riskFactors"],
   });
 
-  const [error, setError] = useState();
+  const [error, setError] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
@@ -128,14 +216,24 @@ export default function Parameter() {
     return result;
   }
 
-  const handleInn = (inn: string | number) => {
+  const handleInn = (newInn: string | number) => {
     const error: InnValidationError = { code: 0, message: "" };
 
-    if (validateInn(inn, error)) {
-      setData((prevData: RequestBody) => ({
+    if (validateInn(newInn, error)) {
+      setData((prevData) => ({
         ...prevData,
         searchContext: {
-          targetSearchEntitiesContext: inn,
+          ...prevData.searchContext,
+          targetSearchEntitiesContext: {
+            ...prevData.searchContext.targetSearchEntitiesContext,
+            targetSearchEntities:
+              prevData.searchContext.targetSearchEntitiesContext.targetSearchEntities.map(
+                (entity) => ({
+                  ...entity,
+                  inn: newInn,
+                })
+              ),
+          },
         },
       }));
     } else {
@@ -158,20 +256,43 @@ export default function Parameter() {
     setEnd(date);
   };
 
+  const formatToYYYYMMDD = (time: number): string => {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
   const handleCheckDates = () => {
     if (start && end) {
-      const startDate = new Date(start).getDate();
-      const endDate = new Date(end).getDate();
-      if (startDate > endDate) {
-        setData((prevData) => ({
-          ...prevData,
-          issueDateInterval: {
-            from: startDate,
-            to: endDate,
-          },
-        }));
+      const startDate = new Date(start).getTime();
+      const endDate = new Date(end).getTime();
+      const now = Date.now();
+
+      if (startDate > now || endDate > now) {
+        setError("Даты не могут быть в будущем.");
+        return false;
       }
+
+      if (startDate > endDate) {
+        setError("Дата начала не может быть позже даты конца.");
+        return false;
+      }
+
+      setData((prevData) => ({
+        ...prevData,
+        issueDateInterval: {
+          startDate: formatToYYYYMMDD(startDate),
+          endDate: formatToYYYYMMDD(endDate),
+        },
+      }));
+      setError("");
+      return true;
     }
+    setError("Введите обе даты.");
+    return false;
   };
 
   const handleCheckboxChange = (key: string, isChecked: boolean) => {
@@ -184,16 +305,72 @@ export default function Parameter() {
     }));
     console.log(key, isChecked);
   };
-  const handleSubmit = () => {
-    handleCheckDates();
-    if (!error) {
-      dispatch(fetchParameters(data));
+
+  const handleCheckboxTwoChange = (key: string, isChecked: boolean) => {
+    setData((prevData) => ({
+      ...prevData,
+      searchContext: {
+        ...prevData.searchContext,
+        [key]: isChecked ? true : false,
+      },
+    }));
+    console.log(key, isChecked);
+  };
+
+  const handleCheckboxFirstChange = (key: string, isChecked: boolean) => {
+    setData((prevData) => ({
+      ...prevData,
+      searchContext: {
+        ...prevData.searchContext,
+        targetSearchEntitiesContext: {
+          ...prevData.searchContext.targetSearchEntitiesContext,
+          targetSearchEntities:
+            prevData.searchContext.targetSearchEntitiesContext.targetSearchEntities.map(
+              (entity) =>
+                entity.hasOwnProperty(key)
+                  ? {
+                      ...entity,
+                      [key]: isChecked ? true : false,
+                    }
+                  : entity
+            ),
+        },
+      },
+    }));
+    console.log(key, isChecked);
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const isValid = handleCheckDates();
+    if (isValid) {
+      console.log("Даты корректны, выполняем отправку.");
+      dispatch(fetchParameters(data))
+        .then(() => {
+          dispatch(fetchCards(data))
+          navigate("/result");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      console.log("Ошибка в датах.");
     }
+  };
+
+  const handleTone = (value: string) => {
+    setData((prevData: RequestBody) => ({
+      ...prevData,
+      searchContext: {
+        ...prevData.searchContext,
+        tonality: value,
+      },
+    }));
   };
 
   console.log(data);
   return (
-    <div className={style.table}>
+    <form className={style.table} onSubmit={(e) => handleSubmit(e)}>
       <div className={style.search}>
         <div className={style.row}>
           <label className={style.cell}>ИНН компании*</label>
@@ -216,9 +393,9 @@ export default function Parameter() {
               handleTone(e.target.value);
             }}
           >
-            <option value="любая">любая</option>
-            <option value="негативная">негативная</option>
-            <option value="позитивная">позитивная</option>
+            <option value="any">любая</option>
+            <option value="negative">негативная</option>
+            <option value="positive">позитивная</option>
           </select>
         </div>
         <div className={style.row}>
@@ -234,24 +411,42 @@ export default function Parameter() {
         <div className={style.row}>
           <label className={style.cell}>Диапазон поиска*</label>
           <div className={style.inputs}>
+      
             <input
               className={style.input}
               type="date"
               required
-              onChange={(e) => handleDateStart(e.target.value)}
+              onChange={(e) => handleDateStart(e.target.value)} 
+              onBlur={handleCheckDates}
             />{" "}
             <input
               className={style.input}
               type="date"
-              required
+              required 
               onChange={(e) => handleDateEnd(e.target.value)}
+              onBlur={handleCheckDates}
             />
           </div>
         </div>
       </div>
       <div className={style.checkboxes}>
+        {inputFree.map((input) => (
+          <Checkbox
+            label={input.label}
+            checked={input.checked}
+            onChange={(isChecked) =>
+              handleCheckboxFirstChange(input.key, isChecked)
+            }
+          />
+        ))}
         {inputs.map((input) => (
-          <Checkbox label={input.label} checked={input.checked} />
+          <Checkbox
+            label={input.label}
+            checked={input.checked}
+            onChange={(isChecked) => {
+              handleCheckboxTwoChange(input.key, isChecked);
+            }}
+          />
         ))}
         {checkboxs.map((checkbox) => (
           <Checkbox
@@ -262,12 +457,15 @@ export default function Parameter() {
             }
           />
         ))}
-
         <div className={style.btn}>
           <button className={`button ${style.button}`}>Поиск</button>
           <p>* Обязательные к заполнению поля</p>
         </div>
       </div>
-    </div>
+      <div className={style.btnMobile}>
+          <button className={`button ${style.button}`}>Поиск</button>
+          <p>* Обязательные к заполнению поля</p>
+        </div>
+    </form>
   );
 }

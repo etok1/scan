@@ -4,6 +4,8 @@ import PlanCard from "../PlanCard/PlanCard";
 import Slider from "../Slider/Slider";
 import style from "./style.module.css";
 
+
+
 interface planProps {
   color: string;
   name: string;
@@ -72,9 +74,9 @@ const plans: planProps[] = [
   },
 ];
 
-export default function Home() {
+export default function Home() { 
   return (
-    <>
+    <div style={{padding: '0 10px', display: 'flex', flexDirection: 'column'}}>
       <section className={style.request}>
         <div className={style.heading}>
           <h1>сервис по поиску публикаций о компании по его ИНН</h1>
@@ -103,6 +105,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

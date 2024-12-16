@@ -1,4 +1,6 @@
 .button {
+  max-width: 100%;
+  width: 100%;
   background-color: var(--purple);
   border-radius: 5px;
   padding: 13px 55px;
@@ -16,4 +18,13 @@
 
 .clicked {
   background-color: var(--dark-grey);
+
+  &:hover {
+    background-color: var(--purple);
+  }
 }
+
+@media (max-width: 768px) {
+  .button {font-size: 14px;}
+}
+

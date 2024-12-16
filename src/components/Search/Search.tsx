@@ -15,7 +15,7 @@ export default function Search() {
   }
 
   return (
-    <>
+    <div style={{padding: '0 10px', display: 'flex', flexDirection: 'column'}}>
       <div className={style.heading}>
         <div className={style.header}>
           <h1>
@@ -31,8 +31,8 @@ export default function Search() {
       </div>
       <div className={style.parameter}>
         <Parameter />
-        <img src="/images/search3.png" alt="search3" />
+        <img className={style.search3} src="/images/search3.png" alt="search3" />
       </div>
-    </>
+    </div>
   );
 }

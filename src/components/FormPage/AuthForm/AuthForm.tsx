@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import style from "./style.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/store";
+import  { AppDispatch, RootState } from "../../../store/store";
 import { fetchUserData } from "../../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -12,29 +12,26 @@ export default function AuthForm() {
   const { accessToken, loading, error } = useSelector(
     (state: RootState) => state.auth
   );
-  const [login, setLogin] = useState("");
+  const [loginName, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [submit, setSubmit] = useState(true);
 
-  const handleLogin = () => {
-    if (login && password) {
+  const handleLogin = async (e:any) => {  e.preventDefault();
+    if (loginName && password) {
       dispatch(
-        fetchUserData({
-          login: login,
-          password: password,
-        })
-      );
-      navigate("/");
-    }
-  };
+        fetchUserData({ login: loginName, password: password })
+      )
+      navigate('/')
+  }}
+  
 
   useEffect(() => {
-    if (login && password) {
+    if (loginName && password) {
       setSubmit(false);
     } else {
       setSubmit(true);
     }
-  }, [login, password]);
+  }, [loginName, password]);
 
   if (loading) {
     return (
@@ -57,7 +54,7 @@ export default function AuthForm() {
           <input
             type="text"
             id="login"
-            value={login}
+            value={loginName}
             onChange={(e) => {
               setLogin(e.target.value);
               console.log(e.target.value);

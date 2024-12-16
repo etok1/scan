@@ -1,24 +1,17 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import Cards from "../Cards/Cards";
 import style from "./style.module.css";
 import Table from "./Table/Table";
+import { selectCards, selectData } from "../../slices/ParamSlice";
 
 export default function Result() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const paramsData = useSelector(selectData);
+  const paramsCards = useSelector(selectCards);
 
-  if (!isAuthenticated) {
-    return (
-      <p className={style.headerDocs}>
-        You need to be logged in to access this page.
-      </p>
-    );
-  }
+  console.log(paramsCards);
 
   return (
-    <div className={style.result}>
+    <div className={style.result} style={{padding: '0 10px', display: 'flex', flexDirection: 'column'}}>
       <section className={style.header}>
         <div className={style.heading}>
           <h1>
@@ -37,7 +30,7 @@ export default function Result() {
       <section className={style.docs}>
         {" "}
         <h2 className={style.headerDocs}>Список документов</h2>
-        <Cards />
+        {paramsCards && <Cards cards={paramsCards}/>}
       </section>
     </div>
   );

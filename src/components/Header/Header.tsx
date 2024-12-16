@@ -1,11 +1,18 @@
-import { Link } from "react-router-dom";
 import style from "./style.module.css";
-import { useEffect } from "react";
-import ReactLoading from "react-loading";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchUserInfo, logout } from "../../slices/authSlice";
+import { fetchUserInfo } from "../../slices/authSlice";
+import Desktop from "./Desktop/Desktop";
+import BurgerMenu from "./BurgerMenu/BurgerMenu";
+
+const links = [
+  { label: "Главная", path: "/" },
+  { label: "Тарифы", path: "/" },
+  { label: "FAQ", path: "/" },
+]
 export default function Header() {
+
   const dispatch = useDispatch<AppDispatch>();
   const { userData, loading, error } = useSelector(
     (state: RootState) => state.auth
@@ -15,7 +22,6 @@ export default function Header() {
     (state: RootState) => state.auth.isAuthenticated
   );
 
-  console.log(userData);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -31,66 +37,12 @@ export default function Header() {
 
   return (
     <header className={style.header}>
-      {/*  */}
-      <img src="/logo.png" alt="logo" />
-      <nav>
-        <ul className={style.nav}>
-          <li>
-            <Link to="/">Главная</Link>
-          </li>
-          <li>
-            <Link to="/auth">Тарифы</Link>
-          </li>
-          <li>
-            <Link to="/result">FAQ</Link>
-          </li>
-        </ul>
-      </nav>
-      {!isAuthenticated ? (
-        <div className={style.login}>
-          <button className={style.signupBtn}>
-            {" "}
-            <Link to="/auth">Зарегистрироваться</Link>
-          </button>
-          <div className={style.line}></div>
-          <button className={style.loginBtn}>
-            <Link to="/auth">Войти</Link>
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className={style.info}>
-            {loading ? (
-              <ReactLoading
-                type={"spinningBubbles"}
-                color={"#000"}
-                height={"20px"}
-                width={"20px"}
-              />
-            ) : (
-              <>
-                <p>
-                  Использовано компаний:
-                  <span className={style.used}>
-                    {userData?.usedCompanyCount}
-                  </span>
-                </p>
-                <p>
-                  Лимит по компаниям:
-                  <span className={style.limit}>{userData?.companyLimit}</span>
-                </p>
-              </>
-            )}
-          </div>
-          <div className={style.profile}>
-            <div className={style.user}>
-              <h2>Алексей А.</h2>
-              <p onClick={() => dispatch(logout())}>Выйти</p>
-            </div>
-            <img src="/profile.png" alt="profile" />
-          </div>
-        </>
-      )}
+      <div className={style.desktop}>
+        <Desktop links={links} isAuthenticated={isAuthenticated} loading={loading} dispatch={dispatch} userData={userData}/>
+      </div>
+      <div className={style.mobile}>
+        <BurgerMenu links={links} isAuthenticated={isAuthenticated} loading={loading} dispatch={dispatch} userData={userData}/>
+      </div>
     </header>
   );
 }

@@ -8,8 +8,8 @@ import FormPage from "./components/FormPage/FormPage";
 import Result from "./components/Result/Result";
 
 function App() {
-  return (
-    <Router>
+  return ( 
+    <Router> 
       <div className="App">
         <div className="container">
           <Header />
@@ -19,10 +19,10 @@ function App() {
             <Route path="/auth" element={<FormPage />} />
             <Route path="/result" element={<Result />} />
           </Routes>
-        </div>{" "}
+        </div>
         <Footer />
-      </div>
-    </Router>
+      </div>  
+    </Router> 
   );
 }
 

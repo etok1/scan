@@ -3,6 +3,7 @@
   display: flex;
   align-items: flex-start;
 }
+
 .heading h1 {
   font-family: "Ferry", sans-serif;
   font-size: 60px;
@@ -18,6 +19,10 @@
   max-width: 534px;
   width: 100%;
   line-height: 1.3;
+}
+
+.heading button{
+  width: 50% !important;
 }
 
 .heading button a {
@@ -45,4 +50,51 @@
   align-items: center;
   justify-content: center;
   gap: 50px;
+}
+
+@media (max-width: 768px) {
+  .request {
+    flex-direction: column;
+    gap: 25px;
+  }
+  .request img{
+    max-width: 500px;
+    width: 100%;
+  }
+  .heading h1 {
+    font-size: 35px;
+    line-height: 50px;
+  }
+  .heading p {
+    font-size: 18px;
+  }
+  .image{
+    max-width: 650px;    width: 100%;
+align-self: center;
+  }
+  .plansContainer{
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 25px
+  }
+  .reason h3,
+.plans h3{
+  font-size: 30px;
+}
+}
+
+@media (max-width: 425px){
+  .heading h1 {
+    font-size: 25px;
+    line-height: 35px;
+  }
+  .heading p {
+    font-size: 16px;
+  }
+  .plansContainer{justify-content: center;}
+  
+.heading button{
+  width: 100% !important;
+}
 }

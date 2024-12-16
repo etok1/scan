@@ -48,14 +48,14 @@
   gap: 10px;
 }
 
-.btn {
+.btn, .btnMobile {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-top: 50px;
 }
 
-.btn p {
+.btn p, .btnMobile p {
   font-size: 14px;
   color: var(--dark-grey);
   margin-top: 10px;
@@ -70,4 +70,44 @@
 .button {
   width: 100%;
   padding: 15px 20px;
+}
+
+.btnMobile{
+  display: none;
+}
+
+@media (max-width: 768px){
+ .table{
+  max-width: 740px;
+  width: 90%;
+ }
+}
+
+@media (max-width: 650px){ 
+  .table{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .checkboxes{
+    display: none;
+  }
+  .search {
+    width: 100%;
+  }
+  .input {
+    padding: 10px 15px;
+  }
+  .btnMobile{
+    display:flex;
+    margin-top: 5px !important;
+    width: 100%;
+  }
+  .inputs{
+    flex-direction: column;
+    gap: 10px;
+  }
+  .inputs input{
+    width: 93%;
+  }
 }

@@ -34,3 +34,20 @@
   align-items: center;
   justify-content: space-between;
 }
+
+@media (max-width: 768px){
+  .header h1{
+    font-size: 30px;
+  }
+  .image1, .image2{
+    display: none;
+  }
+  .parameter{
+    flex-direction: column;
+  }
+  .search3{
+    margin-top: 50px;
+    max-width: 450px; 
+    width: 100%;
+  }
+}

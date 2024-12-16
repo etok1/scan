@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import Button from "../Button/Button";
 import style from "./style.module.css";
 
@@ -25,6 +27,7 @@ export default function PlanCard({
   include,
   selected,
 }: planProps) {
+
   return (
     <div
       className={style.card}
@@ -43,29 +46,35 @@ export default function PlanCard({
         <img className={style.img} src={image} alt={name} />
       </div>
       <div className={style.info}>
-        {selected ? <p className={style.selected}>Текущий тариф</p> : <p> </p>}
-        <h2 className={style.price}>
-          {price.sale} ₽<p className={style.regular}>{price.regular} ₽</p>
-        </h2>
-        <p className={style.alt}>{alt}</p>
-        <div className={style.plan}>
-          <h4>В тариф входит:</h4>
-          <ul>
-            {include.map((plan) => (
-              <li key={plan}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#5CD740"
-                >
-                  <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-                </svg>
-                {plan}
-              </li>
-            ))}
-          </ul>
+        <div className={style.planText}>
+          {selected ? <p className={style.selected}>Текущий тариф</p> : <p> </p>}
+        </div>
+        <div className={style.infoTexts}>
+          <h2 className={style.price}>
+            {price.sale} ₽<p className={style.regular}>{price.regular} ₽</p>
+          </h2>
+          <div className={style.altPrice}>
+            <p className={style.alt}>{alt}</p>
+          </div>
+          <div className={style.plan}>
+            <h4>В тариф входит:</h4>
+            <ul>
+              {include.map((plan) => (
+                <li key={plan}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#5CD740"
+                  >
+                    <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+                  </svg>
+                  {plan}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className={style.btn}>
           {" "}

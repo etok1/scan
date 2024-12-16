@@ -25,8 +25,8 @@ interface Credentials {
 }
 
 const initialState: AuthProps = {
-  isAuthenticated: false,
-  accessToken: null,
+  isAuthenticated: !!localStorage.getItem("token"),
+  accessToken: localStorage.getItem("token") || null,
   expire: null,
   userData: null,
   loading: false,
@@ -56,6 +56,7 @@ export const fetchUserData = createAsyncThunk<AuthResponse, Credentials>(
       }
 
       const jsonData: AuthResponse = await response.json();
+      console.log(jsonData)
       return jsonData;
     } catch (error: any) {
       return rejectWithValue(error.message || "Network error");
@@ -111,7 +112,8 @@ const AuthSlice = createSlice({
     builder
       .addCase(fetchUserData.pending, (state) => {
         state.isAuthenticated = false;
-        state.loading = true;
+        state.loading = true;    
+        console.log('pending user data')
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.isAuthenticated = true;
@@ -122,7 +124,7 @@ const AuthSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.isAuthenticated = false;
         state.loading = false;
-        state.error = action.error.message || null;
+        state.error = action.error.message || null;      
       })
       .addCase(fetchUserInfo.pending, (state) => {
         state.loading = true;
@@ -141,6 +143,6 @@ const AuthSlice = createSlice({
   },
 });
 
-export const { logout } = AuthSlice.actions;
+export const {logout } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

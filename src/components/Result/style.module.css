@@ -29,3 +29,17 @@
   font-weight: 900;
   text-transform: uppercase;
 }
+
+
+@media (max-width: 768px){
+  .header{
+   flex-direction: column;
+  }
+  .heading h1 {
+    font-size: 30px;
+  }
+  .header img{
+    max-width: 450px;
+    width: 100%;
+  }
+ }

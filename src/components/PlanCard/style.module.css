@@ -1,4 +1,4 @@
-.card {
+.card { font-family: "Inter", sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -38,17 +38,37 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-
+  justify-content: space-between;
   padding: 15px;
 }
 
+/*   */
+
+.planText, .altPrice{
+  width: 100%;
+  height: 25px;
+}
+
+.planText{
+  display: flex;
+  justify-content: end;
+}
+
 .selected {
+  width: fit-content;
   font-size: 14px;
   color: var(--white);
   padding: 5px 10px;
   background-color: #3ba5e0;
-  align-self: flex-end;
+
   border-radius: 10px;
+}
+
+.infoTexts{
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .price {
@@ -95,5 +115,11 @@
 }
 .img {
   width: 93px;
-  /* height: 103px; */
+}
+
+@media (max-width: 768px) {
+  .card{
+    width: 335px;
+    height: 512px;
+  }
 }

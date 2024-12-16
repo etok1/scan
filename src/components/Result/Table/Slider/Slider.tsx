@@ -2,23 +2,26 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import style from "./style.module.css";
+import "./style.module.css";
 import { useRef } from "react";
 import Slide from "../Slide/Slide";
 
-const data = [
-  { first: "cat", second: "dog", third: "bird" },
-  { first: "red", second: "blue", third: "green" },
-  { first: "car", second: "bike", third: "bus" },
-  { first: "sun", second: "moon", third: "star" },
-  { first: "pen", second: "pencil", third: "eraser" },
-  { first: "apple", second: "banana", third: "cherry" },
-  { first: "cup", second: "plate", third: "spoon" },
-  { first: "tree", second: "bush", third: "grass" },
-  { first: "rock", second: "sand", third: "soil" },
-  { first: "rain", second: "snow", third: "wind" },
-];
+interface intervalPoint {
+  date: string;
+  value: number; 
+}
 
-export function SliderTable() {
+interface dataPoint {
+  data:intervalPoint[]; 
+ histogramType: string;
+}
+
+interface data {
+  data:  dataPoint[]; 
+ 
+}
+
+export function SliderTable(data:data) {
   const slidesRef = useRef<Slider | null>(null);
 
   const settings = {
@@ -125,10 +128,12 @@ export function SliderTable() {
         <p>Риски</p>
       </div>
       <div className={style.sliderWrapper}>
-        <Slider {...settings} ref={slidesRef}>
-          {data.map((item, index) => (
-            <Slide key={index} item={item} />
-          ))}
+        <Slider {...settings} ref={slidesRef} >
+        {data?.data.map((dataitem, index) => (
+          dataitem.data.map((item, indexSecond) => (   
+            <Slide key={indexSecond} date={item.date} value={item.value}/>
+          ))
+        ))}
         </Slider>
       </div>
       <svg

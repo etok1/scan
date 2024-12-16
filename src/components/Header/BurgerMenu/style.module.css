@@ -1,0 +1,114 @@
+.burgerMenu {
+  max-width: 768px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headerMenu { 
+  width: 100%;
+  display: flex;
+  align-items: center;  
+  justify-content: space-between;
+}
+
+.headerMenu svg{
+  transition: all 0.2s linear;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: var(--light-black);
+}
+
+.info p {
+  font-size: 12px;
+  color: var(--dark-grey);
+}
+
+.used {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.limit {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--salad);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  text-align: right;
+  gap: 10px;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.user h2 {
+  font-size: 14px;
+}
+
+.user p {
+  color: var(--dark-grey);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.login {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.dropMenu {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.nav li{
+  margin-bottom: 10px;
+}
+
+.nav li a {
+  position: relative;
+  text-decoration: none;
+  color: var(--black);
+  transition: all 0.5s ease;
+
+  &:hover {
+    color: var(--green);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--black);
+    transition: width 0.5s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
